@@ -59,11 +59,26 @@ define(["sitecore", "jquery", "underscore", "entityService"], function (Sitecore
 
         },
 
-        UpdateArticle: function() {
+        UpdateArticle: function () {
             var newsService = this.EntityServiceConfig();
+
+            var itemId = this.ListControl1.viewModel.selectedItemId();
+
+            var self = this;
+
+            var result = newsService.fetchEntity(itemId).execute().then(function (newsArticle) {
+                newsArticle.Title = self.tbTitle.viewModel.text();
+                newsArticle.Description = self.tbDescription.viewModel.text();
+                newsArticle.Date = self.dpDate.viewModel.getDate()
+
+                newsArticle.save().execute().then(function (savedNewsArticle) {
+                    self.messageBar.addMessage("notification", { text: "Item updated successfully", actions: [], closable: true, temporary: true });
+                });
+            });
+
         },
 
-        DeleteArticle: function() {
+        DeleteArticle: function () {
             var newsService = this.EntityServiceConfig();
 
             var successMessage = this.mbDeleted;
@@ -77,7 +92,7 @@ define(["sitecore", "jquery", "underscore", "entityService"], function (Sitecore
             });
         },
 
-        AddArticle: function() {
+        AddArticle: function () {
             var newsService = this.EntityServiceConfig();
 
             var newsArticle = {
@@ -92,6 +107,21 @@ define(["sitecore", "jquery", "underscore", "entityService"], function (Sitecore
 
         },
 
+        ResetFields: function () {
+            this.tbID.viewModel.text("");
+            this.tbTitle.viewModel.text("");
+            this.tbDescription.viewModel.text("");
+            this.dpDate.viewModel.setDate("");
+        },
+
+        SaveChanges: function () {
+            if (this.tbID.viewModel.text().length === 0) {
+                this.AddArticle();
+            }
+            else {
+                this.UpdateArticle();
+            }
+        }
     });
 
     return EntityServiceDemo;

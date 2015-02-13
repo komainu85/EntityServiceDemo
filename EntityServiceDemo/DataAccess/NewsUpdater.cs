@@ -14,9 +14,10 @@ namespace MikeRobbins.EntityServiceDemo.DataAccess
         private IFieldUpdater _iFieldUpdater = null;
         private INewsReader _iNewsReader = null;
 
-        public NewsUpdater(IFieldUpdater iFieldUpdater)
+        public NewsUpdater(IFieldUpdater iFieldUpdater, INewsReader iNewsReader)
         {
             _iFieldUpdater = iFieldUpdater;
+            _iNewsReader = iNewsReader;
         }
 
         public void UpdateNewsArticle(NewsArticle newsArticle)

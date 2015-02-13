@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.DynamicData;
 using MikeRobbins.EntityServiceDemo.Interfaces;
 using MikeRobbins.EntityServiceDemo.Models;
 using Sitecore.Data.Items;
@@ -11,7 +12,7 @@ namespace MikeRobbins.EntityServiceDemo.DataAccess
 {
     public class FieldUpdater: IFieldUpdater
     {
-        public void AddFieldsToItem<T>(Item item, T sourceObject)
+        public void AddFieldsToItem<T>(Item item, T sourceObject) where T : Sitecore.Services.Core.Model.EntityIdentity 
         {
             try
             {

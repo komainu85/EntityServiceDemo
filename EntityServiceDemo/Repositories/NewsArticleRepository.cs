@@ -18,7 +18,6 @@ namespace MikeRobbins.EntityServiceDemo.Repositories
             ObjectFactory.Initialize(x=>x.AddRegistry(new IoC.Registry()));
         }
 
-
         public IQueryable<NewsArticle> GetAll()
         {
             var newsReader = ObjectFactory.GetInstance<INewsReader>();
