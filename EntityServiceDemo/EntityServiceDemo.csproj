@@ -56,6 +56,12 @@
     <Reference Include="Sitecore.Services.Infrastructure.Sitecore">
       <HintPath>..\..\..\..\inetpub\wwwroot\MikeRobbins8\Website\bin\Sitecore.Services.Infrastructure.Sitecore.dll</HintPath>
     </Reference>
+    <Reference Include="StructureMap">
+      <HintPath>..\packages\structuremap.3.1.4.143\lib\net40\StructureMap.dll</HintPath>
+    </Reference>
+    <Reference Include="StructureMap.Net4">
+      <HintPath>..\packages\structuremap.3.1.4.143\lib\net40\StructureMap.Net4.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -85,9 +91,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\NewsArticlesController.cs" />
+    <Compile Include="DataAccess\FieldUpdater.cs" />
+    <Compile Include="Interfaces\INewsCreator.cs" />
+    <Compile Include="Interfaces\INewsReader.cs" />
+    <Compile Include="DataAccess\NewsReader.cs" />
+    <Compile Include="Interfaces\INewsUpdater.cs" />
+    <Compile Include="DataAccess\NewsUpdater.cs" />
+    <Compile Include="Interfaces\IFieldUpdater.cs" />
+    <Compile Include="DataAccess\NewsCreator.cs" />
+    <Compile Include="IoC\Registry.cs" />
+    <Compile Include="Interfaces\INewsMapper.cs" />
+    <Compile Include="Mapper\NewsMapper.cs" />
     <Compile Include="Models\NewsArticle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\NewsArticleRepository.cs" />
+    <Compile Include="Utilties\SitecoreUtilities.cs" />
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup>

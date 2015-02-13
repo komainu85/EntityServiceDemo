@@ -10,6 +10,6 @@ namespace MikeRobbins.EntityServiceDemo.Models
         public string itemId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public string Date { get; set; }
+        public DateTime Date { get; set; }
     }
 }

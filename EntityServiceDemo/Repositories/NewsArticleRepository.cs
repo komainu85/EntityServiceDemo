@@ -2,56 +2,67 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using MikeRobbins.EntityServiceDemo.DataAccess;
+using MikeRobbins.EntityServiceDemo.Interfaces;
 using MikeRobbins.EntityServiceDemo.Models;
+using MikeRobbins.EntityServiceDemo.Utilties;
 using Sitecore.Data;
+using StructureMap;
 
 namespace MikeRobbins.EntityServiceDemo.Repositories
 {
     public class NewsArticleRepository : Sitecore.Services.Core.IRepository<NewsArticle>
     {
+        public NewsArticleRepository()
+        {
+            ObjectFactory.Initialize(x=>x.AddRegistry(new IoC.Registry()));
+        }
+
+
         public IQueryable<NewsArticle> GetAll()
         {
-            var articles = new List<NewsArticle>();
+            var newsReader = ObjectFactory.GetInstance<INewsReader>();
 
-            articles.Add(new NewsArticle(){Date = DateTime.Now.ToString(), itemId ="fsfdfsd", Id = "fsfdfsd", Title = "sdfsdfsdf"});
-
-            return articles.AsQueryable();
+            return newsReader.GetNewsArticles().AsQueryable();
         }
 
         public NewsArticle FindById(string id)
         {
-            var newsArticle = Sitecore.Data.Database.GetDatabase("master").GetItem(new ID(id));
+            var newsReader = ObjectFactory.GetInstance<INewsReader>();
 
-            if (newsArticle != null)
-            {
-                return new NewsArticle() { Id = newsArticle.ID.ToString(), Title = newsArticle["Title"], Description = newsArticle["Description"]};
-            }
-            else
-            {
-                return null;
-            }
+            var sId = SitecoreUtilities.ParseId(id);
+
+            return newsReader.GetNewsArticle(sId);
         }
 
         public void Add(NewsArticle entity)
         {
-            throw new NotImplementedException();
+            var newsCreator = ObjectFactory.GetInstance<INewsCreator>();
+
+            // newsCreator.ParentItem= 
+            //newsCreator.Template
+
+            newsCreator.CreateNewsArticle(entity);
         }
 
         public bool Exists(NewsArticle entity)
         {
-            var newsArticle = Sitecore.Data.Database.GetDatabase("master").GetItem(new ID(entity.Id));
+            var newsReader = ObjectFactory.GetInstance<INewsReader>();
 
-            return newsArticle != null;
+            return newsReader.NewsAticleExists(entity);
         }
 
         public void Update(NewsArticle entity)
         {
-            throw new NotImplementedException();
+            var newsUpdater = ObjectFactory.GetInstance<NewsUpdater>();
+
+            newsUpdater.UpdateNewsArticle(entity);
         }
 
         public void Delete(NewsArticle entity)
         {
-            throw new NotImplementedException();
+            var newsUpdater = ObjectFactory.GetInstance<INewsUpdater>();
+            newsUpdater.DeleteNewsArticle(entity);
         }
     }
 }
