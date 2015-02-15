@@ -7,6 +7,9 @@ using MikeRobbins.EntityServiceDemo.Interfaces;
 using MikeRobbins.EntityServiceDemo.Models;
 using MikeRobbins.EntityServiceDemo.Utilties;
 using Sitecore.Data;
+using Sitecore.Data.Items;
+using Sitecore.Data.Managers;
+using Sitecore.Sites;
 using StructureMap;
 
 namespace MikeRobbins.EntityServiceDemo.Repositories
@@ -15,7 +18,7 @@ namespace MikeRobbins.EntityServiceDemo.Repositories
     {
         public NewsArticleRepository()
         {
-            ObjectFactory.Initialize(x=>x.AddRegistry(new IoC.Registry()));
+            ObjectFactory.Initialize(x => x.AddRegistry(new IoC.Registry()));
         }
 
         public IQueryable<NewsArticle> GetAll()
@@ -38,8 +41,8 @@ namespace MikeRobbins.EntityServiceDemo.Repositories
         {
             var newsCreator = ObjectFactory.GetInstance<INewsCreator>();
 
-            // newsCreator.ParentItem= 
-            //newsCreator.Template
+            newsCreator.ParentItem = Sitecore.Data.Database.GetDatabase("master").GetItem(new ID("{68DA2C9B-DA93-4848-9EF3-07DA58E17319}"));
+            newsCreator.Template = new TemplateItem(Sitecore.Data.Database.GetDatabase("master").GetItem(new ID("{18FF6308-E01B-4460-A884-C1DA8A25E515}")));
 
             newsCreator.CreateNewsArticle(entity);
         }

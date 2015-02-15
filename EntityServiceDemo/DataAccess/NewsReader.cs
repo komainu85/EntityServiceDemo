@@ -21,7 +21,7 @@ namespace MikeRobbins.EntityServiceDemo.DataAccess
 
         public Item GetNewsItem(ID id)
         {
-          return Sitecore.Data.Database.GetDatabase("master").GetItem(id);
+            return Sitecore.Data.Database.GetDatabase("master").GetItem(id);
         }
 
         public NewsArticle GetNewsArticle(ID id)
@@ -48,9 +48,15 @@ namespace MikeRobbins.EntityServiceDemo.DataAccess
 
         public bool NewsAticleExists(NewsArticle newsArticle)
         {
-            var id = SitecoreUtilities.ParseId(newsArticle.Id);
+            var exists = false;
 
-            return Sitecore.Data.Database.GetDatabase("master").GetItem(id) != null;
+            if (newsArticle.Id != null)
+            {
+                var id = SitecoreUtilities.ParseId(newsArticle.Id);
+                exists = Sitecore.Data.Database.GetDatabase("master").GetItem(id) != null;
+            }
+
+            return exists;
         }
 
     }

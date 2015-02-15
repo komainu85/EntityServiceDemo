@@ -5,14 +5,16 @@ using System.Web;
 using System.Web.DynamicData;
 using MikeRobbins.EntityServiceDemo.Interfaces;
 using MikeRobbins.EntityServiceDemo.Models;
+using Sitecore;
+using Sitecore.Data.Fields;
 using Sitecore.Data.Items;
 using Sitecore.Services.Core.ComponentModel;
 
 namespace MikeRobbins.EntityServiceDemo.DataAccess
 {
-    public class FieldUpdater: IFieldUpdater
+    public class FieldUpdater : IFieldUpdater
     {
-        public void AddFieldsToItem<T>(Item item, T sourceObject) where T : Sitecore.Services.Core.Model.EntityIdentity 
+        public void AddFieldsToItem<T>(Item item, T sourceObject) where T : Sitecore.Services.Core.Model.EntityIdentity
         {
             try
             {
@@ -25,7 +27,12 @@ namespace MikeRobbins.EntityServiceDemo.DataAccess
                     object value = null;
                     fields.TryGetValue(key, out value);
 
-                    item[key] = value.ToString();
+                    var field = item.Fields[key];
+
+                    if (field != null && key!="Id")
+                    {
+                        UpdateFieldValue<T>(field, value);
+                    }
                 }
 
                 item.Editing.AcceptChanges();
@@ -37,6 +44,18 @@ namespace MikeRobbins.EntityServiceDemo.DataAccess
                 Sitecore.Diagnostics.Log.Error(ex.Message, this);
             }
 
+        }
+
+        private static void UpdateFieldValue<T>(Field field, object value) where T : Sitecore.Services.Core.Model.EntityIdentity
+        {
+            if (field.Type == "Date")
+            {
+                field.Value = DateUtil.ToIsoDate(((DateTime) value));
+            }
+            else
+            {
+                field.Value = value.ToString();
+            }
         }
     }
 }

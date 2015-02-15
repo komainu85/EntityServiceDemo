@@ -27,6 +27,8 @@ define(["sitecore", "jquery", "underscore", "entityService"], function (Sitecore
             return newsService;
         },
 
+
+
         GetNewsArticles: function () {
 
             var newsService = this.EntityServiceConfig();
@@ -69,11 +71,14 @@ define(["sitecore", "jquery", "underscore", "entityService"], function (Sitecore
             var result = newsService.fetchEntity(itemId).execute().then(function (newsArticle) {
                 newsArticle.Title = self.tbTitle.viewModel.text();
                 newsArticle.Description = self.tbDescription.viewModel.text();
-                newsArticle.Date = self.dpDate.viewModel.getDate()
+                newsArticle.Date = self.DateFormatter(self.dpDate.viewModel.getDate());
 
                 newsArticle.save().execute().then(function (savedNewsArticle) {
-                    self.messageBar.addMessage("notification", { text: "Item updated successfully", actions: [], closable: true, temporary: true });
+                    // self.messageBar.addMessage("notification", { text: "Item updated successfully", actions: [], closable: true, temporary: true });
                 });
+
+                self.messageBar.addMessage("notification", { text: "Item updated successfully", actions: [], closable: true, temporary: true });
+                self.ResetFields();
             });
 
         },
@@ -81,13 +86,13 @@ define(["sitecore", "jquery", "underscore", "entityService"], function (Sitecore
         DeleteArticle: function () {
             var newsService = this.EntityServiceConfig();
 
-            var successMessage = this.mbDeleted;
+            var self = this;
 
             var itemId = this.ListControl1.viewModel.selectedItemId();
 
             var result = newsService.fetchEntity(itemId).execute().then(function (newsArticle) {
                 newsArticle.destroy().then(function () {
-                    successMessage.viewModel.show();
+                 self.messageBar.addMessage("notification", { text: "Item deleted successfully", actions: [], closable: true, temporary: true });
                 });
             });
         },
@@ -97,15 +102,20 @@ define(["sitecore", "jquery", "underscore", "entityService"], function (Sitecore
 
             var newsArticle = {
                 Title: this.tbTitle.viewModel.text(),
-                Description: this.txtDescription.viewModel.text(),
+                Description: this.tbDescription.viewModel.text(),
                 Date: this.dpDate.viewModel.getDate()
             };
 
+            var self = this;
+
             var result = newsService.create(newsArticle).execute().then(function (newArticle) {
-                var test = "";
+                self.messageBar.addMessage("notification", { text: "Item created successfully", actions: [], closable: true, temporary: true });
+                self.ResetFields();
             });
 
         },
+
+
 
         ResetFields: function () {
             this.tbID.viewModel.text("");
@@ -121,6 +131,10 @@ define(["sitecore", "jquery", "underscore", "entityService"], function (Sitecore
             else {
                 this.UpdateArticle();
             }
+        },
+
+        DateFormatter: function (now) {
+            return now.getFullYear() + '-' + ('0' + (now.getMonth() + 1)).slice(-2) + '-' + ('0' + now.getDate()).slice(-2) + ' ' + ('0' + (now.getHours() + 1)).slice(-2) + ':' + ('0' + now.getMinutes()).slice(-2) + ':' + ('0' + now.getSeconds()).slice(-2);
         }
     });
 
