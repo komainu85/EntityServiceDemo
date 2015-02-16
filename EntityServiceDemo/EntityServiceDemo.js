@@ -7,6 +7,8 @@
 define(["sitecore", "jquery", "underscore", "entityService"], function (Sitecore, $, _, entityService) {
     var EntityServiceDemo = Sitecore.Definitions.App.extend({
 
+        that: this,
+
         filesUploaded: [],
 
         initialized: function () {
@@ -69,12 +71,14 @@ define(["sitecore", "jquery", "underscore", "entityService"], function (Sitecore
 
             var self = this;
 
-            var result = newsService.fetchEntity(itemId).execute().then(function (newsArticle) {
+            newsService.fetchEntity(itemId).execute().then(function (newsArticle) {
                 newsArticle.Title = self.tbTitle.viewModel.text();
                 newsArticle.Description = self.tbDescription.viewModel.text();
                 newsArticle.Date = self.DateFormatter(self.dpDate.viewModel.getDate());
 
-                newsArticle.on('save', self.ArticleUpdated);
+                newsArticle.on('save', function() {
+                    self.ArticleUpdated(self);
+                });
 
                 newsArticle.save().execute();
             });
@@ -117,9 +121,9 @@ define(["sitecore", "jquery", "underscore", "entityService"], function (Sitecore
 
 
 
-        ArticleUpdated: function() {
-            this.messageBar.addMessage("notification", { text: "Item updated successfully", actions: [], closable: true, temporary: true });
-            this.ResetFields();
+        ArticleUpdated: function (self) {
+           self.messageBar.addMessage("notification", { text: "Item updated successfully", actions: [], closable: true, temporary: true });
+           self.ResetFields();
         },
 
         ResetFields: function () {
