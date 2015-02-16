@@ -24,6 +24,7 @@ define(["sitecore", "jquery", "underscore", "entityService"], function (Sitecore
                 url: "/sitecore/api/ssc/MikeRobbins-EntityServiceDemo-Controllers/NewsArticles"
             });
 
+
             return newsService;
         },
 
@@ -73,12 +74,9 @@ define(["sitecore", "jquery", "underscore", "entityService"], function (Sitecore
                 newsArticle.Description = self.tbDescription.viewModel.text();
                 newsArticle.Date = self.DateFormatter(self.dpDate.viewModel.getDate());
 
-                newsArticle.save().execute().then(function (savedNewsArticle) {
-                    // self.messageBar.addMessage("notification", { text: "Item updated successfully", actions: [], closable: true, temporary: true });
-                });
+                newsArticle.on('save', self.ArticleUpdated);
 
-                self.messageBar.addMessage("notification", { text: "Item updated successfully", actions: [], closable: true, temporary: true });
-                self.ResetFields();
+                newsArticle.save().execute();
             });
 
         },
@@ -92,7 +90,8 @@ define(["sitecore", "jquery", "underscore", "entityService"], function (Sitecore
 
             var result = newsService.fetchEntity(itemId).execute().then(function (newsArticle) {
                 newsArticle.destroy().then(function () {
-                 self.messageBar.addMessage("notification", { text: "Item deleted successfully", actions: [], closable: true, temporary: true });
+                    self.messageBar.addMessage("notification", { text: "Item deleted successfully", actions: [], closable: true, temporary: true });
+                    self.GetNewsArticles();
                 });
             });
         },
@@ -111,11 +110,17 @@ define(["sitecore", "jquery", "underscore", "entityService"], function (Sitecore
             var result = newsService.create(newsArticle).execute().then(function (newArticle) {
                 self.messageBar.addMessage("notification", { text: "Item created successfully", actions: [], closable: true, temporary: true });
                 self.ResetFields();
+                self.GetNewsArticles();
             });
 
         },
 
 
+
+        ArticleUpdated: function() {
+            this.messageBar.addMessage("notification", { text: "Item updated successfully", actions: [], closable: true, temporary: true });
+            this.ResetFields();
+        },
 
         ResetFields: function () {
             this.tbID.viewModel.text("");
