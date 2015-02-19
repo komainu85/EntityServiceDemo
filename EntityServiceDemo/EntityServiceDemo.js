@@ -7,10 +7,6 @@
 define(["sitecore", "jquery", "underscore", "entityService"], function (Sitecore, $, _, entityService) {
     var EntityServiceDemo = Sitecore.Definitions.App.extend({
 
-        that: this,
-
-        filesUploaded: [],
-
         initialized: function () {
             this.ListControl1.on("change:selectedItemId", this.ItemSelected, this);
             this.GetNewsArticles();

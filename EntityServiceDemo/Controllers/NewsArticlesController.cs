@@ -19,7 +19,5 @@ namespace MikeRobbins.EntityServiceDemo.Controllers
             : this(new NewsArticleRepository())
         {
         }
-
-
     }
 }
