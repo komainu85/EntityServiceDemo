@@ -15,4 +15,8 @@ The quickest way to setup this demo project is to download the Sitecore package 
 
 > - The solution is built on Visual Studio 2013
 > - Reference the following Sitecore DLLs.
-
+> - Sitecore.Kernel
+> - Sitecore.Services.Client
+> - Sitecore.Services.Core
+> - Sitecore.Services.Infrastructure
+> - Sitecore.Services.Infrastructure.Sitecore
