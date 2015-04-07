@@ -1,3 +1,8 @@
+Sitecore Entity Service Demo Application
+===================
+
+A example Sitecore entity service application showing how to create a new service. Consume the service within a SPEAK application using the JavaScript API. Blog post on Entity Service available here. <http://mikerobbins.co.uk/2015/01/06/entityservice-sitecore-service-client/>
+
 Project Setup
 ===================
 
