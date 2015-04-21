@@ -1,11 +1,11 @@
 ﻿require.config({
     paths: {
         entityService: "/sitecore/shell/client/Services/Assets/lib/entityservice",
-        itemService: "/sitecore/shell/client/Services/Assets/lib/itemservice"
+        unit: "/sitecore/shell/client/MikeRobbins/lib/unit"
     }
 });
 
-define(["sitecore", "jquery", "underscore", "entityService", "itemService"], function (Sitecore, $, _, entityService, itemService) {
+define(["sitecore", "jquery", "underscore", "entityService","unit"], function (Sitecore, $, _, entityService, unit) {
     var EntityServiceDemo = Sitecore.Definitions.App.extend({
 
         initialized: function () {
@@ -53,6 +53,9 @@ define(["sitecore", "jquery", "underscore", "entityService", "itemService"], fun
             var self = this;
 
             var result = newsService.fetchEntity(selectedId).execute().then(function (newsArticle) {
+
+                newsArticle.should.be.an.instanceOf(entityService.Entity);
+
                 self.tbID.viewModel.text(newsArticle.Id);
                 self.tbTitle.viewModel.text(newsArticle.Title);
                 self.tbDescription.viewModel.text(newsArticle.Description);
@@ -108,7 +111,7 @@ define(["sitecore", "jquery", "underscore", "entityService", "itemService"], fun
 
             var self = this;
 
-            var result = newsService.create(newsArticle).then(function (newArticle) {
+            var result = newsService.create(newsArticle).execute().then(function (newArticle) {
                 self.messageBar.addMessage("notification", { text: "Item created successfully", actions: [], closable: true, temporary: true });
                 self.ResetFields();
                 self.GetNewsArticles();
