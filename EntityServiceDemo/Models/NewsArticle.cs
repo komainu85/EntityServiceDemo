@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using MikeRobbins.EntityServiceDemo.Attributes;
+using MikeRobbins.EntityServiceDemo.MetaData;
 
 namespace MikeRobbins.EntityServiceDemo.Models
 {
@@ -13,6 +15,8 @@ namespace MikeRobbins.EntityServiceDemo.Models
         [Required]
         public string Title { get; set; }
         public string Description { get; set; }
+
+      //  [NotPastDate]
         public DateTime Date { get; set; }
     }
 }

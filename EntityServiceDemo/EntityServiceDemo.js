@@ -1,10 +1,11 @@
 ﻿require.config({
     paths: {
-        entityService: "/sitecore/shell/client/Services/Assets/lib/entityservice"
+        entityService: "/sitecore/shell/client/Services/Assets/lib/entityservice",
+        itemService: "/sitecore/shell/client/Services/Assets/lib/itemservice"
     }
 });
 
-define(["sitecore", "jquery", "underscore", "entityService"], function (Sitecore, $, _, entityService) {
+define(["sitecore", "jquery", "underscore", "entityService", "itemService"], function (Sitecore, $, _, entityService, itemService) {
     var EntityServiceDemo = Sitecore.Definitions.App.extend({
 
         initialized: function () {
@@ -107,11 +108,13 @@ define(["sitecore", "jquery", "underscore", "entityService"], function (Sitecore
 
             var self = this;
 
-            var result = newsService.create(newsArticle).execute().then(function (newArticle) {
+            var result = newsService.create(newsArticle).then(function (newArticle) {
                 self.messageBar.addMessage("notification", { text: "Item created successfully", actions: [], closable: true, temporary: true });
                 self.ResetFields();
                 self.GetNewsArticles();
             });
+
+            result.execute();
 
         },
 
