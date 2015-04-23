@@ -111,17 +111,14 @@ define(["sitecore", "jquery", "underscore", "entityService","unit"], function (S
 
             var self = this;
 
-            var result = newsService.create(newsArticle).execute().then(function (newArticle) {
+            newsService.create(newsArticle).execute().then(function (newArticle) {
                 self.messageBar.addMessage("notification", { text: "Item created successfully", actions: [], closable: true, temporary: true });
                 self.ResetFields();
                 self.GetNewsArticles();
+            }).fail(function (error) {
+                self.messageBar.addMessage("error", { text:  error.message, actions: [], closable: true, temporary: true });
             });
-
-            result.execute();
-
         },
-
-
 
         ArticleUpdated: function (self) {
            self.messageBar.addMessage("notification", { text: "Item updated successfully", actions: [], closable: true, temporary: true });
