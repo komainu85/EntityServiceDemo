@@ -16,55 +16,52 @@ namespace MikeRobbins.EntityServiceDemo.Repositories
 {
     public class NewsArticleRepository : Sitecore.Services.Core.IRepository<NewsArticle>
     {
-        public NewsArticleRepository()
+        private INewsReader _iNewsReader;
+        private INewsUpdater _iNewsUpdater;
+        private INewsCreator _iNewsCreator;
+
+        public NewsArticleRepository(INewsReader iNewsReader, INewsUpdater iNewsUpdater, INewsCreator iNewsCreator)
         {
-            ObjectFactory.Initialize(x => x.AddRegistry(new IoC.Registry()));
+            _iNewsReader = iNewsReader;
+            _iNewsUpdater = iNewsUpdater;
+            _iNewsCreator = iNewsCreator;
         }
 
         public IQueryable<NewsArticle> GetAll()
         {
-            var newsReader = ObjectFactory.GetInstance<INewsReader>();
-
-            return newsReader.GetNewsArticles().AsQueryable();
+            return _iNewsReader.GetNewsArticles().AsQueryable();
         }
 
         public NewsArticle FindById(string id)
         {
-            var newsReader = ObjectFactory.GetInstance<INewsReader>();
-
             var sId = SitecoreUtilities.ParseId(id);
 
-            return newsReader.GetNewsArticle(sId);
+            return _iNewsReader.GetNewsArticle(sId);
         }
 
         public void Add(NewsArticle entity)
         {
-            var newsCreator = ObjectFactory.GetInstance<INewsCreator>();
+            _iNewsCreator.ParentItem = Sitecore.Data.Database.GetDatabase("master").GetItem(new ID("{68DA2C9B-DA93-4848-9EF3-07DA58E17319}"));
+            _iNewsCreator.Template = new TemplateItem(Sitecore.Data.Database.GetDatabase("master").GetItem(new ID("{18FF6308-E01B-4460-A884-C1DA8A25E515}")));
 
-            newsCreator.ParentItem = Sitecore.Data.Database.GetDatabase("master").GetItem(new ID("{68DA2C9B-DA93-4848-9EF3-07DA58E17319}"));
-            newsCreator.Template = new TemplateItem(Sitecore.Data.Database.GetDatabase("master").GetItem(new ID("{18FF6308-E01B-4460-A884-C1DA8A25E515}")));
+            var newItem = _iNewsCreator.CreateNewsArticle(entity);
 
-            newsCreator.CreateNewsArticle(entity);
+            entity.Id = newItem.ID.ToString();
         }
 
         public bool Exists(NewsArticle entity)
         {
-            var newsReader = ObjectFactory.GetInstance<INewsReader>();
-
-            return newsReader.NewsAticleExists(entity);
+            return _iNewsReader.NewsAticleExists(entity);
         }
 
         public void Update(NewsArticle entity)
         {
-            var newsUpdater = ObjectFactory.GetInstance<NewsUpdater>();
-
-            newsUpdater.UpdateNewsArticle(entity);
+            _iNewsUpdater.UpdateNewsArticle(entity);
         }
 
         public void Delete(NewsArticle entity)
         {
-            var newsUpdater = ObjectFactory.GetInstance<INewsUpdater>();
-            newsUpdater.DeleteNewsArticle(entity);
+            _iNewsUpdater.DeleteNewsArticle(entity);
         }
     }
 }

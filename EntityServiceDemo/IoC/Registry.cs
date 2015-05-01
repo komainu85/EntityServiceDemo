@@ -5,6 +5,7 @@ using System.Web;
 using MikeRobbins.EntityServiceDemo.DataAccess;
 using MikeRobbins.EntityServiceDemo.Interfaces;
 using MikeRobbins.EntityServiceDemo.Mapper;
+using Sitecore.Services.Core;
 
 namespace MikeRobbins.EntityServiceDemo.IoC
 {
@@ -17,6 +18,7 @@ namespace MikeRobbins.EntityServiceDemo.IoC
             For<INewsMapper>().Use<NewsMapper>();
             For<INewsReader>().Use<NewsReader>();
             For<INewsCreator>().Use<NewsCreator>();
+            For(typeof(IRepository<>)).Use(typeof(MikeRobbins.EntityServiceDemo.Repositories.NewsArticleRepository));
         }
     }
 }

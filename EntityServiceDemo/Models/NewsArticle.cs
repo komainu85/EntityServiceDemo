@@ -16,7 +16,7 @@ namespace MikeRobbins.EntityServiceDemo.Models
         public string Title { get; set; }
         public string Description { get; set; }
 
-       [NotPastDate]
+        [NotPastDate(ErrorMessage = "Date must be in the past")]
         public DateTime Date { get; set; }
     }
 }

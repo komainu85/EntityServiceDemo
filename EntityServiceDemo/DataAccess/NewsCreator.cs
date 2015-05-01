@@ -20,11 +20,13 @@ namespace MikeRobbins.EntityServiceDemo.DataAccess
             _iFieldUpdater = iFieldUpdater;
         }
 
-        public void CreateNewsArticle(NewsArticle newsArticle)
+        public Item CreateNewsArticle(NewsArticle newsArticle)
         {
             var newItem = ParentItem.Add(newsArticle.Title, Template);
 
             _iFieldUpdater.AddFieldsToItem(newItem, newsArticle);
+
+            return newItem;
         }
 
     }
