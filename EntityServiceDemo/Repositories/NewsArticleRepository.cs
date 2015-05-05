@@ -19,12 +19,14 @@ namespace MikeRobbins.EntityServiceDemo.Repositories
         private INewsReader _iNewsReader;
         private INewsUpdater _iNewsUpdater;
         private INewsCreator _iNewsCreator;
+        private ISitecoreUtilities _iSitecoreUtilities;
 
-        public NewsArticleRepository(INewsReader iNewsReader, INewsUpdater iNewsUpdater, INewsCreator iNewsCreator)
+        public NewsArticleRepository(INewsReader iNewsReader, INewsUpdater iNewsUpdater, INewsCreator iNewsCreator, ISitecoreUtilities iSitecoreUtilities)
         {
             _iNewsReader = iNewsReader;
             _iNewsUpdater = iNewsUpdater;
             _iNewsCreator = iNewsCreator;
+            _iSitecoreUtilities = iSitecoreUtilities;
         }
 
         public IQueryable<NewsArticle> GetAll()
@@ -34,7 +36,7 @@ namespace MikeRobbins.EntityServiceDemo.Repositories
 
         public NewsArticle FindById(string id)
         {
-            var sId = SitecoreUtilities.ParseId(id);
+            var sId = _iSitecoreUtilities.ParseId(id);
 
             return _iNewsReader.GetNewsArticle(sId);
         }

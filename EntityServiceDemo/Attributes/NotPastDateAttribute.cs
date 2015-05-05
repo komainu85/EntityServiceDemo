@@ -9,22 +9,13 @@ namespace MikeRobbins.EntityServiceDemo.Attributes
     public class NotPastDateAttribute : ValidationAttribute
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
-        {    DateTime dateProperty = (DateTime)value;
+        {
+            DateTime dateProperty = (DateTime)value;
 
             DateTime dateNow = DateTime.Now;
 
-            if (dateProperty >= dateNow)
-            {
-                return ValidationResult.Success;
-            }
-            else
-            {
-                return new ValidationResult(ErrorMessage);
-                
-            }
-   
+            return dateProperty >= dateNow ? ValidationResult.Success : new ValidationResult(ErrorMessage);
         }
-
 
     }
 }

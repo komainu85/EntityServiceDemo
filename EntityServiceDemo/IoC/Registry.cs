@@ -18,6 +18,7 @@ namespace MikeRobbins.EntityServiceDemo.IoC
             For<INewsMapper>().Use<NewsMapper>();
             For<INewsReader>().Use<NewsReader>();
             For<INewsCreator>().Use<NewsCreator>();
+            For<ISitecoreUtilities>().Use<ISitecoreUtilities>();
             For(typeof(IRepository<>)).Use(typeof(MikeRobbins.EntityServiceDemo.Repositories.NewsArticleRepository));
         }
     }

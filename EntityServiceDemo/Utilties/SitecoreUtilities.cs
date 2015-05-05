@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using MikeRobbins.EntityServiceDemo.Interfaces;
 using Sitecore.Data;
 
 namespace MikeRobbins.EntityServiceDemo.Utilties
 {
-    public static class SitecoreUtilities
+    public class SitecoreUtilities : ISitecoreUtilities
     {
-
-        public static ID ParseId(string id)
+        public ID ParseId(string id)
         {
             var sID = ID.Null;
 
