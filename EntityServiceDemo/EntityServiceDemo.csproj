@@ -97,6 +97,7 @@
       <SubType>Designer</SubType>
     </None>
     <Content Include="packages.config" />
+    <Content Include="sitecore\shell\client\MikeRobbins\lib\unit.js" />
     <Content Include="sitecore\shell\client\Services\Assets\lib\extensions\validators\notPastDate.js" />
   </ItemGroup>
   <ItemGroup>
