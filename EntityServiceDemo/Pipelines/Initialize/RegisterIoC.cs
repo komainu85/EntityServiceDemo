@@ -1,6 +1,9 @@
 ﻿using System.Web.Http;
+using System.Web.Routing;
 using MikeRobbins.EntityServiceDemo.IoC;
 using Sitecore.Pipelines;
+using Sitecore.Services.Infrastructure.Sitecore;
+using Sitecore.Services.Infrastructure.Web.Http;
 using StructureMap;
 
 namespace MikeRobbins.EntityServiceDemo.Pipelines.Initialize
@@ -9,9 +12,13 @@ namespace MikeRobbins.EntityServiceDemo.Pipelines.Initialize
     {
         public void Process(PipelineArgs args)
         {
-            var config = GlobalConfiguration.Configuration;
+            var servicesConfig = GlobalConfiguration.Configuration;
+
+
+
+
             var container = new Container(new Registry());
-            config.DependencyResolver = new StructureMapDependencyResolver(container);
+            servicesConfig.DependencyResolver = new StructureMapDependencyResolver(container);
         }
     }
 }
