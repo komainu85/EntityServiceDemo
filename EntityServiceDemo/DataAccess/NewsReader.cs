@@ -13,10 +13,12 @@ namespace MikeRobbins.EntityServiceDemo.DataAccess
     public class NewsReader : INewsReader
     {
         private INewsMapper _iNewsMapper;
+        private ISitecoreUtilities _iSitecoreUtilities;
 
-        public NewsReader(INewsMapper iNewsMapper)
+        public NewsReader(INewsMapper iNewsMapper, ISitecoreUtilities iSitecoreUtilities)
         {
             _iNewsMapper = iNewsMapper;
+            _iSitecoreUtilities = iSitecoreUtilities;
         }
 
         public Item GetNewsItem(ID id)
@@ -52,7 +54,7 @@ namespace MikeRobbins.EntityServiceDemo.DataAccess
 
             if (newsArticle.Id != null)
             {
-                var id = SitecoreUtilities.ParseId(newsArticle.Id);
+                var id = _iSitecoreUtilities.ParseId(newsArticle.Id);
                 exists = Sitecore.Data.Database.GetDatabase("master").GetItem(id) != null;
             }
 

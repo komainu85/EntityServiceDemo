@@ -11,18 +11,20 @@ namespace MikeRobbins.EntityServiceDemo.DataAccess
 {
     public class NewsUpdater : INewsUpdater
     {
-        private IFieldUpdater _iFieldUpdater = null;
-        private INewsReader _iNewsReader = null;
+        private IFieldUpdater _iFieldUpdater;
+        private INewsReader _iNewsReader;
+        private ISitecoreUtilities _iSitecoreUtilities;
 
-        public NewsUpdater(IFieldUpdater iFieldUpdater, INewsReader iNewsReader)
+        public NewsUpdater(IFieldUpdater iFieldUpdater, INewsReader iNewsReader, ISitecoreUtilities iSitecoreUtilities)
         {
             _iFieldUpdater = iFieldUpdater;
             _iNewsReader = iNewsReader;
+            _iSitecoreUtilities = iSitecoreUtilities;
         }
 
         public void UpdateNewsArticle(NewsArticle newsArticle)
         {
-            var id = SitecoreUtilities.ParseId(newsArticle.Id);
+            var id = _iSitecoreUtilities.ParseId(newsArticle.Id);
 
             if (!id.IsNull)
             {
@@ -34,7 +36,7 @@ namespace MikeRobbins.EntityServiceDemo.DataAccess
 
         public void DeleteNewsArticle(NewsArticle newsArticle)
         {
-            var id = SitecoreUtilities.ParseId(newsArticle.Id);
+            var id = _iSitecoreUtilities.ParseId(newsArticle.Id);
 
             var item = _iNewsReader.GetNewsItem(id);
 

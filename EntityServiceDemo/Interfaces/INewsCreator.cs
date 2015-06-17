@@ -7,6 +7,6 @@ namespace MikeRobbins.EntityServiceDemo.Interfaces
     {
         TemplateItem Template { get; set; }
         Item ParentItem { get; set; }
-        void CreateNewsArticle(NewsArticle newsArticle);
+        Item CreateNewsArticle(NewsArticle newsArticle);
     }
 }

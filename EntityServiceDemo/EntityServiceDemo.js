@@ -1,10 +1,11 @@
 ﻿require.config({
     paths: {
-        entityService: "/sitecore/shell/client/Services/Assets/lib/entityservice"
+        entityService: "/sitecore/shell/client/Services/Assets/lib/entityservice",
+        unit: "/sitecore/shell/client/MikeRobbins/lib/unit"
     }
 });
 
-define(["sitecore", "jquery", "underscore", "entityService"], function (Sitecore, $, _, entityService) {
+define(["sitecore", "jquery", "underscore", "entityService","unit"], function (Sitecore, $, _, entityService, unit) {
     var EntityServiceDemo = Sitecore.Definitions.App.extend({
 
         initialized: function () {
@@ -52,6 +53,9 @@ define(["sitecore", "jquery", "underscore", "entityService"], function (Sitecore
             var self = this;
 
             var result = newsService.fetchEntity(selectedId).execute().then(function (newsArticle) {
+
+                newsArticle.should.be.an.instanceOf(entityService.Entity);
+
                 self.tbID.viewModel.text(newsArticle.Id);
                 self.tbTitle.viewModel.text(newsArticle.Title);
                 self.tbDescription.viewModel.text(newsArticle.Description);
@@ -107,15 +111,14 @@ define(["sitecore", "jquery", "underscore", "entityService"], function (Sitecore
 
             var self = this;
 
-            var result = newsService.create(newsArticle).execute().then(function (newArticle) {
+            newsService.create(newsArticle).execute().then(function (newArticle) {
                 self.messageBar.addMessage("notification", { text: "Item created successfully", actions: [], closable: true, temporary: true });
                 self.ResetFields();
                 self.GetNewsArticles();
+            }).fail(function (error) {
+                self.messageBar.addMessage("error", { text:  error.message, actions: [], closable: true, temporary: true });
             });
-
         },
-
-
 
         ArticleUpdated: function (self) {
            self.messageBar.addMessage("notification", { text: "Item updated successfully", actions: [], closable: true, temporary: true });

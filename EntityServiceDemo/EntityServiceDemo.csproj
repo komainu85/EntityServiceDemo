@@ -21,6 +21,7 @@
     <IISExpressUseClassicPipelineMode />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -79,6 +80,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\inetpub\wwwroot\MikeRobbins8\Website\bin\System.Web.Http.Cors.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\inetpub\wwwroot\MikeRobbins8\Website\bin\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
@@ -88,12 +93,18 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App_Config\Include\EntityServiceDemo.config">
+      <SubType>Designer</SubType>
+    </None>
     <Content Include="packages.config" />
+    <Content Include="sitecore\shell\client\MikeRobbins\lib\unit.js" />
+    <Content Include="sitecore\shell\client\Services\Assets\lib\extensions\validators\notPastDate.js" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="EntityServiceDemo.js" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\NotPastDateAttribute.cs" />
     <Compile Include="Controllers\NewsArticlesController.cs" />
     <Compile Include="DataAccess\FieldUpdater.cs" />
     <Compile Include="Interfaces\INewsCreator.cs" />
@@ -105,10 +116,14 @@
     <Compile Include="DataAccess\NewsCreator.cs" />
     <Compile Include="IoC\Registry.cs" />
     <Compile Include="Interfaces\INewsMapper.cs" />
+    <Compile Include="IoC\StructureMapDependencyResolver.cs" />
     <Compile Include="Mapper\NewsMapper.cs" />
+    <Compile Include="MetaData\NotPastDateMetaData.cs" />
     <Compile Include="Models\NewsArticle.cs" />
+    <Compile Include="Pipelines\Initialize\RegisterIoC.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\NewsArticleRepository.cs" />
+    <Compile Include="Interfaces\ISitecoreUtilities.cs" />
     <Compile Include="Utilties\SitecoreUtilities.cs" />
   </ItemGroup>
   <ItemGroup />
@@ -145,8 +160,8 @@
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
   <PropertyGroup>
-    <PostBuildEvent>xcopy /Q /Y "$(TargetDir)$(TargetName).*" "C:\inetpub\wwwroot\MikeRobbins8\website\bin\"
-xcopy /Q /Y "$(ProjectDir)*.js" "C:\inetpub\wwwroot\MikeRobbins8\website\sitecore\shell\client\MikeRobbins\EntityServiceDemo\EntityServiceDemo.js"</PostBuildEvent>
+    <PostBuildEvent>xcopy /Q /Y "$(TargetDir)$(TargetName).*" "C:\inetpub\wwwroot\MikeRobbins8u2\website\bin\"
+xcopy /Q /Y "$(ProjectDir)*.js" "C:\inetpub\wwwroot\MikeRobbins8u2\website\sitecore\shell\client\MikeRobbins\EntityServiceDemo\EntityServiceDemo.js"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
